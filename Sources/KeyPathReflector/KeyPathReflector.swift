@@ -3,9 +3,10 @@ import Runtime
 /// Reflects property information for key paths of stored properties for a given type.
 public final class KeyPathReflector<T> {
     private typealias Cache = (keyPaths: [String: PartialKeyPath<T>?], properties: [PartialKeyPath<T>: PropertyInfo?])
-
-    private let properties: [PropertyInfo]
     private var cache: Cache
+
+    /// The reflected property info for the stored properties of type `T`.
+    public let properties: [PropertyInfo]
 
     /// Creates a new instance of `KeyPathReflector` for a given type.
     ///
