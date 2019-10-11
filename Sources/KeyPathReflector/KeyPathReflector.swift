@@ -1,7 +1,7 @@
 import Runtime
 
 public final class KeyPathReflector<T> {
-    private typealias Cache = (keyPaths: [String: PartialKeyPath<T>?], strings: [PartialKeyPath<T>: String?])
+    private typealias Cache = (keyPaths: [String: PartialKeyPath<T>?], properties: [PartialKeyPath<T>: PropertyInfo?])
 
     private let properties: [PropertyInfo]
     private var cache: Cache
@@ -11,24 +11,24 @@ public final class KeyPathReflector<T> {
         self.cache = ([:], [:])
     }
 
-    public func string(for keyPath: PartialKeyPath<T>) -> String? {
-        if let value = self.cache.strings[keyPath] { return value }
+    public func property(for keyPath: PartialKeyPath<T>) -> PropertyInfo? {
+        if case let .some(cached) = self.cache.properties[keyPath] { return cached }
 
         guard let offset = MemoryLayout<T>.offset(of: keyPath) else {
-            self.cache.strings[keyPath] = nil
+            self.cache.properties[keyPath] = .some(.none)
             return nil
         }
 
-        guard let name = self.properties.first(where: { $0.offset == offset })?.name else {
-            self.cache.strings[keyPath] = nil
+        guard let property = self.properties.first(where: { $0.offset == offset }) else {
+            self.cache.properties[keyPath] = .some(.none)
             return nil
         }
 
-        self.cache.strings[keyPath] = name
-        return name
+        self.cache.properties[keyPath] = .some(.some(property))
+        return property
     }
 
     public func cachedKeyPath(for string: String) -> PartialKeyPath<T>? {
-        return self.cache.strings.first(where: { $0.value == string })?.key
+        return self.cache.properties.first(where: { $0.value?.name == string })?.key
     }
 }
