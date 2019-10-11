@@ -3,5 +3,6 @@ import XCTest
 import KeyPathReflectorTests
 
 var tests = [XCTestCaseEntry]()
-tests += KeyPathReflectorTests.allTests()
+tests += KeyPathReflectorTests.__allTests()
+
 XCTMain(tests)
