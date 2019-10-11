@@ -27,4 +27,8 @@ public final class KeyPathReflector<T> {
         self.cache.strings[keyPath] = name
         return name
     }
+
+    public func cachedKeyPath(for string: String) -> PartialKeyPath<T>? {
+        return self.cache.strings.first(where: { $0.value == string })?.key
+    }
 }
