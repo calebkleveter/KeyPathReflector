@@ -57,4 +57,15 @@ public final class KeyPathReflector<T> {
     public func cachedKeyPath(for string: String) -> PartialKeyPath<T>? {
         return self.cache.properties.first(where: { $0.value?.name == string })?.key
     }
+
+    /// Gets the cached `PartialKeyPath` as a `KeyPath` where the property info for the key path has a given name.
+    ///
+    /// - Parameter string: The name of the property to get the key path for.
+    ///
+    /// - Complexity: _O(n)_, where _n_ is the number of cached key paths.
+    ///
+    /// - Returns: The `KeyPath` that matches the property info with the name of the string passed in.
+    public func cachedKeyPath<Value>(for string: String) -> KeyPath<T, Value>? {
+        return self.cache.properties.first(where: { $0.value?.name == string })?.key as? KeyPath<T, Value>
+    }
 }
