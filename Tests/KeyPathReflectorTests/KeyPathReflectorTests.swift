@@ -27,10 +27,8 @@ final class KeyPathReflectorTests: XCTestCase {
     }
 
     func testRuntimeKeyPaths() throws {
-        print(MemoryLayout<Bit>.size)
-//        let memoryLayout = self.bytes(of: \Foo.bar)
-//        print(memoryLayout)
-//        print(1*MemoryLayout<Int>.size)
+        let layout = KeyPathLayout(\Foo.dub)
+        print(layout)
     }
 
     func bytes<T>(of value: T) -> [UInt8]{
@@ -50,4 +48,6 @@ struct Foo {
     var bar: String
     var answer: Int
     let baz: Bool
+
+    var dub: Int { self.answer * 2 }
 }
