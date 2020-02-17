@@ -25,6 +25,23 @@ final class KeyPathReflectorTests: XCTestCase {
         XCTAssertEqual(reflector.cachedKeyPath(for: "bar"), \Foo.bar)
         XCTAssertEqual(reflector.cachedKeyPath(for: "baz"), \Foo.baz)
     }
+
+    func testRuntimeKeyPaths() throws {
+        print(MemoryLayout<Bit>.size)
+//        let memoryLayout = self.bytes(of: \Foo.bar)
+//        print(memoryLayout)
+//        print(1*MemoryLayout<Int>.size)
+    }
+
+    func bytes<T>(of value: T) -> [UInt8]{
+        var value = value
+        let size = MemoryLayout<T>.size
+        return withUnsafePointer(to: &value) {
+            $0.withMemoryRebound(to: UInt8.self, capacity: size) {
+                Array(UnsafeBufferPointer(start: $0, count: size))
+            }
+        }
+    }
 }
 
 struct Foo {
